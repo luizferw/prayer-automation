@@ -12,7 +12,7 @@ import time
 import re
 import unicodedata
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -29,7 +29,15 @@ API_VERSION = 'v3'
 CLIENT_SECRETS_FILE = os.path.join(
     project_root, 'secrets', 'client_secret.json'
 )
-TOKEN_FILE = os.path.join(project_root, 'secrets', 'token.json')
+
+
+def get_user_data_path(filename):
+    pasta_dados = os.path.join(os.path.expanduser("~"), ".prayer_automation")
+    os.makedirs(pasta_dados, exist_ok=True)
+    return os.path.join(pasta_dados, filename)
+
+
+TOKEN_FILE = get_user_data_path("token.json")
 
 
 def normalizar_texto(texto):
@@ -249,9 +257,10 @@ def processar_mensagens(mensagens):
 
         pontuacao, probabilidade = detectar_pedido_oracao(texto_original)
 
-        if pontuacao >= 0:
+        if pontuacao > 0:
             dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
-            timestamp_formatado = dt.strftime('%Y-%m-%d %H:%M:%S')
+            dt_utc_minus_3 = dt - timedelta(hours=3)
+            timestamp_formatado = dt_utc_minus_3.strftime('%Y-%m-%d %H:%M:%S')
 
             nome_autor_processado = processar_nome_autor(autor)
             texto_processado = processar_texto(texto_original)
