@@ -4,12 +4,18 @@ then
     pip install pyinstaller
 fi
 
-# Cria o executável
-pyinstaller --onefile --name prayer_automation \
-    --add-data "client_secret.json:." \
-    --add-data "service_account.json:." \
-    --add-data "dados_chat.xlsx:." \
-    prayer_automation_gui.py
+# Detecta o sistema operacional e cria o executável correspondente
+OS_NAME=$(uname -s)
+if [ "$OS_NAME" = "Linux" ]; then
+    echo "Criando executável para Linux..."
+    pyinstaller --onefile --windowed --noconsole --paths src src/gui/prayer_automation_gui.py --name prayer_automation_gui_linux
+elif [[ "$OS_NAME" == MINGW* || "$OS_NAME" == CYGWIN* ]]; then
+    echo "Criando executável para Windows..."
+    pyinstaller --onefile --windowed --noconsole --paths src src/gui/prayer_automation_gui.py --name prayer_automation_gui_windows.exe
+else
+    echo "Sistema operacional não suportado."
+    exit 1
+fi
 
 # Move o executável para a pasta dist
 echo "Executável criado na pasta dist/"
