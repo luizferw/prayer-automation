@@ -18,8 +18,10 @@ class PrayerAutomationGUI:
         self.root.title("Automação de Pedidos de Oração")
 
         # Variáveis
-        self.youtube_credentials = tk.StringVar(value="client_secret.json")
-        self.sheets_credentials = tk.StringVar(value="service_account.json")
+        self.youtube_credentials = tk.StringVar(
+            value="src/secrets/client_secret.json")
+        self.sheets_credentials = tk.StringVar(
+            value="src/secrets/service_account.json")
         self.video_id = tk.StringVar()
         self.planilha = tk.StringVar()
         self.intervalo = tk.IntVar(value=10)
@@ -52,16 +54,10 @@ class PrayerAutomationGUI:
                  width=50).grid(row=2, column=1)
 
         # Planilha
-        tk.Label(self.root, text="Planilha (opcional):").grid(
+        tk.Label(self.root, text="Planilha:").grid(
             row=3, column=0, sticky="w")
         tk.Entry(self.root, textvariable=self.planilha,
                  width=50).grid(row=3, column=1)
-
-        # Intervalo
-        tk.Label(self.root, text="Intervalo (segundos):").grid(
-            row=4, column=0, sticky="w")
-        tk.Entry(self.root, textvariable=self.intervalo,
-                 width=10).grid(row=4, column=1, sticky="w")
 
         # Debug
         tk.Checkbutton(self.root, text="Modo Debug", variable=self.debug).grid(
