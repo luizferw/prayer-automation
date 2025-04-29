@@ -12,6 +12,7 @@ from datetime import datetime
 import gspread
 from google.oauth2.service_account import Credentials
 import openpyxl
+import time
 
 SCOPES = [
     'https://www.googleapis.com/auth/spreadsheets',
@@ -163,6 +164,7 @@ class GoogleSheetsIntegration:
                 probabilidade
             ]
             folha.append_row(dados)
+            time.sleep(5)
             folha.columns_auto_resize(0, 5)
 
             return True
