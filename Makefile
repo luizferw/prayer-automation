@@ -32,7 +32,7 @@ setup:
 
 .PHONY: gui
 gui:
-	@$(PYTHON) src/gui/prayer_automation_gui.py
+	PYTHONPATH=src $(PYTHON) src/gui/prayer_automation_gui.py
 
 .PHONY: lint
 lint:
